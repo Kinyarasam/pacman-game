@@ -1,0 +1,11 @@
+# Ignore the node_modules directory
+node_modules
+
+# ignore all .log files
+*.log
+
+# ignore all .swp files
+*.swp
+
+# ignore all .zip files
+*.zip
