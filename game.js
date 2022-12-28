@@ -99,6 +99,7 @@ const drawWalls = () => {
       }
       */
       if (j > 0 && map[i][j - 1] === 1) {
+        // Draw inner wall on the left side of the current cell
         createRect(
           j * cellSize,
           i * cellSize + wallOffset,
@@ -108,6 +109,7 @@ const drawWalls = () => {
         );
       }
       if (j < map[i].length - 1 && map[i][j + 1] === 1) {
+        // Draw inner wall on the right side of the current cell
         createRect(
           j * cellSize + wallOffset,
           i * cellSize + wallOffset,
@@ -117,6 +119,7 @@ const drawWalls = () => {
         );
       }
       if (i > 0 && map[i - 1][j] === 1) {
+        // Draw inner wall on the top side of the current cell.
         createRect(
           j * cellSize + wallOffset,
           i * cellSize,
@@ -126,6 +129,7 @@ const drawWalls = () => {
         );
       }
       if (i < map.length - 1 && map[i + 1][j] === 1) {
+        // Draw inner wall on the bottom side of the current cell.
         createRect(
           j * cellSize + wallOffset,
           i * cellSize + wallOffset,
@@ -138,20 +142,39 @@ const drawWalls = () => {
   }
 };
 
+/**
+ * Main game loop, responsible for updating the game state and drawing the game.
+ *
+ * @function
+ * @returns {void}
+ */
 const gameLoop = () => {
   update();
   draw();
 };
 
+/**
+ * Update the game state
+ *
+ * @function
+ * @returns {void}
+ */
 const update = () => {
   /**
-   * TODO:
+   * TODO: Update the game state.
    */
 };
 
-// const gameInterval = setInterval(gameLoop, 1000 / fps);
-setInterval(gameLoop, 1000 / fps);
-
+/**
+ * Draw the game.
+ *
+ * @function
+ * @returns {void}
+ */
 const draw = () => {
   drawWalls();
 };
+
+// start the game loop.
+// const gameInterval = setInterval(gameLoop, 1000 / fps);
+setInterval(gameLoop, 1000 / fps);
