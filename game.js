@@ -20,29 +20,59 @@ const createRect = (x, y, width, height, color) => {
   context.fillRect(x, y, width, height);
 };
 
-const wallColor = '#000';
-const pathColor = '#fff';
+const fps = 30;
+const wallColor = '#342DCA';
+// const pathColor = '#000';
 
 // Set the background color of the canvas to black
-// createRect(10, 10, canvas.clientWidth, canvas.height, "#000");
+createRect(0, 0, canvas.clientWidth, canvas.height, '#000');
 
-// Define the map as a two-dimensional array of integers.
+/*
+ * Two-dimensional array representing the map for the Pacman game.
+ *
+ * @typedef {number[][]} Map
+ *
+ * @property {number} 1 - Indicates a wall on the map.
+ * @property {number} 0 - Indicates a path on the map.
+ */
 const map = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
-  [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-  [1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+  [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1],
+  [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+  [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1],
+  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1],
+  [0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+  [1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+  [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+  [1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1],
+  [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
 // Define the size of each cell in the map (in pixels)
 const cellSize = 32;
+const wallInnerColor = '#000';
+const wallSpaceWidth = cellSize / 1.5;
+const wallOffset = (cellSize - wallSpaceWidth) / 2;
 
+/**
+ * Draw the walls and the path.
+ *
+ * @function
+ * @returns {void}
+ */
 const drawWalls = () => {
   // Loop through the map array and draw the rectangles
   for (let i = 0; i < map.length; i++) {
@@ -55,7 +85,10 @@ const drawWalls = () => {
           cellSize,
           wallColor
         );
-      } else if (map[i][j] === 0) { // current cell is a path.
+      }
+      /**
+       *
+      if (map[i][j] === 0) { // current cell is a path.
         createRect(
           j * cellSize,
           i * cellSize,
@@ -64,8 +97,61 @@ const drawWalls = () => {
           pathColor
         );
       }
+      */
+      if (j > 0 && map[i][j - 1] === 1) {
+        createRect(
+          j * cellSize,
+          i * cellSize + wallOffset,
+          wallSpaceWidth + wallOffset,
+          wallSpaceWidth,
+          wallInnerColor
+        );
+      }
+      if (j < map[i].length - 1 && map[i][j + 1] === 1) {
+        createRect(
+          j * cellSize + wallOffset,
+          i * cellSize + wallOffset,
+          wallSpaceWidth + wallOffset,
+          wallSpaceWidth,
+          wallInnerColor
+        );
+      }
+      if (i > 0 && map[i - 1][j] === 1) {
+        createRect(
+          j * cellSize + wallOffset,
+          i * cellSize,
+          wallSpaceWidth,
+          wallSpaceWidth + wallOffset,
+          wallInnerColor
+        );
+      }
+      if (i < map.length - 1 && map[i + 1][j] === 1) {
+        createRect(
+          j * cellSize + wallOffset,
+          i * cellSize + wallOffset,
+          wallSpaceWidth,
+          wallSpaceWidth + wallOffset,
+          wallInnerColor
+        );
+      }
     }
   }
 };
 
-drawWalls();
+const gameLoop = () => {
+  update();
+  draw();
+};
+
+const update = () => {
+  /**
+   * TODO:
+   */
+};
+
+// const gameInterval = setInterval(gameLoop, 1000 / fps);
+setInterval(gameLoop, 1000 / fps);
+
+const draw = () => {
+  drawWalls();
+};
