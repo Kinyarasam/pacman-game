@@ -7,6 +7,7 @@
  */
 const express = require('express');
 const app = express();
+const path = require('path');
 
 /**
  * Middleware for serving static files.
@@ -15,7 +16,7 @@ const app = express();
  * @param {Object} options - Options for the middleware.
  * @returns {function} The middleware function.
  */
-app.use(express.static('.', {index: 'index.html'}));
+app.use(express.static('.', { index: 'index.html' }));
 
 /**
  * Port number for the server.
@@ -34,7 +35,7 @@ const PORT = process.env.PORT || 3000;
  * @returns {void}
  */
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 /**
@@ -47,6 +48,6 @@ const start = () => {
   app.listen(PORT, () => {
     console.log(`Server is now listening on port ${PORT}`);
   });
-}
+};
 
-start()
+start();
