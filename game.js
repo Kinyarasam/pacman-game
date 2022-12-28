@@ -15,13 +15,13 @@ const context = canvas.getContext('2d');
  * @param {string} color - The color of the rectangle.
  * @returns {void}
  */
-let createRect = (x, y, width, height, color) => {
+const createRect = (x, y, width, height, color) => {
   context.fillStyle = color;
   context.fillRect(x, y, width, height);
 };
 
-const wallColor = "#000";
-const pathColor = "#fff";
+const wallColor = '#000';
+const pathColor = '#fff';
 
 // Set the background color of the canvas to black
 // createRect(10, 10, canvas.clientWidth, canvas.height, "#000");
@@ -37,17 +37,17 @@ const map = [
   [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
   [1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
 // Define the size of each cell in the map (in pixels)
 const cellSize = 32;
 
-let drawWalls = () => {
+const drawWalls = () => {
   // Loop through the map array and draw the rectangles
   for (let i = 0; i < map.length; i++) {
     for (let j = 0; j < map[i].length; j++) {
-      if (map[i][j] == 1) { // Current cell is a Wall
+      if (map[i][j] === 1) { // Current cell is a Wall
         createRect(
           j * cellSize,
           i * cellSize,
@@ -55,8 +55,7 @@ let drawWalls = () => {
           cellSize,
           wallColor
         );
-      }
-      else if (map[i][j] == 0) { // current cell is a path.
+      } else if (map[i][j] === 0) { // current cell is a path.
         createRect(
           j * cellSize,
           i * cellSize,
@@ -67,6 +66,6 @@ let drawWalls = () => {
       }
     }
   }
-}
+};
 
 drawWalls();
