@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-/**
- * Game Logic.
- */
 const canvas = document.getElementById('game-canvas');
 const context = canvas.getContext('2d');
 
@@ -25,8 +22,9 @@ const wallColor = '#342DCA';
 // const pathColor = '#000';
 
 // Set the background color of the canvas to black
-createRect(0, 0, canvas.clientWidth, canvas.height, '#000');
-
+const drawScreen = () => {
+  createRect(0, 0, canvas.clientWidth, canvas.height, '#000');
+}
 /*
  * Two-dimensional array representing the map for the Pacman game.
  *
@@ -142,6 +140,18 @@ const drawWalls = () => {
   }
 };
 
+document.addEventListener('keydown', (event) => {
+  // Check if the arrow keys were pressed
+  if (event.key === 'ArrowLeft')
+	pacman.direction = 'left';
+  if (event.key === 'ArrowRight')
+	pacman.direction = 'right';
+  if (event.key === 'ArrowUp')
+	pacman.direction = 'up';
+  if (event.key === 'ArrowDown')
+	pacman.direction = 'down';
+});
+
 /**
  * Main game loop, responsible for updating the game state and drawing the game.
  *
@@ -154,6 +164,25 @@ const gameLoop = () => {
 };
 
 /**
+ * Update the direction.
+ *
+ * @function
+ * @returns {void}
+ */
+const Player_movement = () => {
+  // console.log('keypressed');
+  if (pacman.direction === 'up') {
+    pacman.y -= pacman.speed;
+  } else if (pacman.direction === 'down') {
+    pacman.y += pacman.speed;
+  } else if (pacman.direction === 'left') {
+    pacman.x -= pacman.speed;
+  } else if (pacman.direction === 'right') {
+    pacman.x += pacman.speed;
+  }
+};
+
+/**
  * Update the game state
  *
  * @function
@@ -163,6 +192,8 @@ const update = () => {
   /**
    * TODO: Update the game state.
    */
+  Player_movement();
+  pacman.updatePosition();
 };
 
 /**
@@ -172,7 +203,9 @@ const update = () => {
  * @returns {void}
  */
 const draw = () => {
+  drawScreen();
   drawWalls();
+  pacman.draw();
 };
 
 // start the game loop.

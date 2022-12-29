@@ -2,6 +2,7 @@
   "name": "pacman-game",
   "version": "1.0.0",
   "description": "Pacman Game",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "dev": "echo \"Starting nodemon Server\" && nodemon server.js",
