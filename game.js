@@ -19,6 +19,7 @@ const createRect = (x, y, width, height, color) => {
 
 const fps = 30;
 const wallColor = '#342DCA';
+// const wallColor = '#afd';
 // const pathColor = '#000';
 
 // Set the background color of the canvas to black
@@ -140,17 +141,7 @@ const drawWalls = () => {
   }
 };
 
-document.addEventListener('keydown', (event) => {
-  // Check if the arrow keys were pressed
-  if (event.key === 'ArrowLeft')
-	pacman.direction = 'left';
-  if (event.key === 'ArrowRight')
-	pacman.direction = 'right';
-  if (event.key === 'ArrowUp')
-	pacman.direction = 'up';
-  if (event.key === 'ArrowDown')
-	pacman.direction = 'down';
-});
+
 
 /**
  * Main game loop, responsible for updating the game state and drawing the game.
@@ -163,26 +154,51 @@ const gameLoop = () => {
   draw();
 };
 
-/**
- * Update the direction.
- *
- * @function
- * @returns {void}
- */
-const Player_movement = () => {
-  // console.log('keypressed');
-  if (pacman.direction === 'up') {
-    pacman.y -= pacman.speed;
-  } else if (pacman.direction === 'down') {
-    pacman.y += pacman.speed;
-  } else if (pacman.direction === 'left') {
-    pacman.x -= pacman.speed;
-  } else if (pacman.direction === 'right') {
-    pacman.x += pacman.speed;
-  }
-};
+// /**
+//  * Update the direction.
+//  *
+//  * @function
+//  * @returns {void}
+//  */
+// const Player_movement = () => {
+//   // console.log('keypressed');
+//   if (pacman.direction === 'up') {
+//     pacman.y -= pacman.speed;
+//   } else if (pacman.direction === 'down') {
+//     pacman.y += pacman.speed;
+//   } else if (pacman.direction === 'left') {
+//     pacman.x -= pacman.speed;
+//   } else if (pacman.direction === 'right') {
+//     pacman.x += pacman.speed;
+//   }
+// };
+const pacman = new Pacman(50, 50, 16, 'right', 5);
 
 /**
+ * Capture the keypress.
+ * 
+ * @function.
+ * @returns {void}
+ */
+const keyDown = () => {
+  document.addEventListener('keydown', (event) => {
+    // Check if the arrow keys were pressed
+    if (event.key === 'ArrowLeft') {
+      pacman.direction = 'left';
+      // console.log(pacman.direction);
+    } else if (event.key === 'ArrowRight') {
+      pacman.direction = 'right';
+    } else if (event.key === 'ArrowUp') {
+      pacman.direction = 'up';
+    } else if (event.key === 'ArrowDown') {
+      pacman.direction = 'down';
+    }
+  });
+}
+
+console.log(keyDown());
+
+/** 
  * Update the game state
  *
  * @function
@@ -192,20 +208,29 @@ const update = () => {
   /**
    * TODO: Update the game state.
    */
-  Player_movement();
-  pacman.updatePosition();
-};
+  pacman.move(pacman.direction);
+  // Player_movement();
+  // pacman.updatePosition();
+}; 
+
+
+// pacman.move('left');
+console.log(pacman);
+
+pacman.draw(context);
+
 
 /**
  * Draw the game.
  *
  * @function
  * @returns {void}
- */
+ */ 
 const draw = () => {
   drawScreen();
   drawWalls();
-  pacman.draw();
+  pacman.draw(context);
+  // pacman.draw();
 };
 
 // start the game loop.
