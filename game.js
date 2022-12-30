@@ -29,7 +29,7 @@ const wallOffset = (cellSize - wallSpaceWidth) / 2;
 // Set the background color of the canvas to black
 const drawScreen = () => {
   createRect(0, 0, canvas.clientWidth, canvas.height, '#000');
-}
+};
 
 /*
  * Two-dimensional array representing the map for the Pacman game.
@@ -64,7 +64,6 @@ const map = [
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
-
 
 /**
  * Draw the walls and the path.
@@ -129,13 +128,12 @@ const drawWalls = () => {
   }
 };
 
-
 const pacman = new Pacman(
   cellSize + (cellSize / 2),
   cellSize + (cellSize / 2),
   cellSize / 2,
-  'right', 
-  5
+  'down',
+  4
 );
 
 /**
@@ -149,7 +147,7 @@ const gameLoop = () => {
   draw();
 };
 
-/** 
+/**
  * Update the game state
  *
  * @function
@@ -160,7 +158,7 @@ const update = () => {
    * TODO: Update the game state.
    */
   pacman.move(pacman.updateDirection());
-}; 
+};
 
 // console.log(pacman);
 
@@ -171,7 +169,7 @@ pacman.draw(context);
  *
  * @function
  * @returns {void}
- */ 
+ */
 const draw = () => {
   drawScreen();
   drawWalls();

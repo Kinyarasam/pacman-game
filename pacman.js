@@ -116,7 +116,7 @@ class Pacman {
    * @function.
    * @returns {void}
    */
-  updateDirection = () => {
+  updateDirection() {
     document.addEventListener('keydown', (event) => {
       console.log(event.key)
       // Check if the arrow keys were pressed
@@ -131,25 +131,94 @@ class Pacman {
         this.direction = 'down';
       }
     });
-  }
+  } 
 
-  nextPos_x = this.x;
-  nextPos_y = this.y;
+  // /**
+  //  * --------
+  //  *
+  //  * @function
+  //  * @returns {number} The x-coordinate
+  //  */
+  // get_map_x() {
+  //   return (parseInt(this.x / cellSize));
+  // }
 
-  checkWallCollision() {
-    
-  }
+  // /**
+  //  * --------
+  //  *
+  //  *  @function
+  //  *  @returns {number} The y-coordinate
+  //  */
+  // get_map_y() {
+  //   return (parseInt(this.y / cellSize));
+  // }
+
+  // /**
+  //  * -----
+  //  *
+  //  *  @function
+  //  *  @returns {number} Right wall x-coordinate.
+  //  */
+  // get_map_x_RS() {
+  //   return (parseInt(this.x * 0.99 + cellSize) / cellSize);
+  // }
+
+  // /**
+  //  * -----
+  //  *
+  //  *  @function
+  //  *  @returns {number} Right wall y-coordinate.
+  //  */
+  // get_map_y_RS() {
+  //   return (parseInt(this.y * 0.99 + cellSize) / cellSize);
+  // }
+  // checkWallCollision() {
+    // let isCollision = false;
+
+    // if (
+    //   map[parseInt(this.y / cellSize)][
+    //     parseInt(this.x / cellSize)
+    //   ] == 1 ||
+    //   map[parseInt(this.y / cellSize + 0.9999)][
+    //     parseInt(this.x / cellSize)
+    //   ] == 1 ||
+    //   map[parseInt(this.y / cellSize)][
+    //     parseInt(this.x / cellSize + 0.9999)
+    //   ] == 1 ||
+    //   map[parseInt(this.y / cellSize + 0.9999)][
+    //     parseInt(this.x / cellSize + 0.9999)
+    //   ] == 1
+    // ) {
+    //     isCollision = true;
+    // }
+    // return (isCollision);
+  // }
 
   /**
-   * Move the pacman in a given direction.
+   * Check for collision between a Pacman character and a map.
    *
-   * @param {string} direction - The direction in which to move the Pacman.
-   * @returns {void}
+   * @param {Pacman} pacman - The Pacman character.
+   * @param {Map} map - The map data.
+   * @returns {boolean} True if there is a collision, false otherwise.
    */
-  move() {
-    // this.checkWallCollision();
+  checkCollision () {
+    // Get the Pacman's current position
+    // const { x, y } = pacman;
 
-    if (this.direction === 'right') {
+    // Convert the position to map cell coordinates
+    const cellX = Math.floor(this.x / cellSize);
+    const cellY = Math.floor(this.y / cellSize);
+    console.log(map[cellY][cellX])
+
+    // Check if the cell at the Pacman's position is a wall
+    if (map[cellY][cellX] === '#') {
+      this.x = 28;
+    }
+    return map[cellY][cellX] === 1;
+  };
+
+  forwardMove() {
+    if (this.direction === 'right') { 
       this.x += this.speed;
     } else if (this.direction === 'left') {
       this.x -= this.speed;
@@ -160,6 +229,44 @@ class Pacman {
     }
   }
 
+  backwardMove() {
+    console.log('backmove')
+    if (this.direction === 'right') { 
+      this.x -= this.speed;
+    } else if (this.direction === 'left') {
+      this.x += this.speed;
+    } else if (this.direction === 'up') {
+      this.y += this.speed;
+    } else if (this.direction === 'down') {
+      this.y -= this.speed;
+    }
+  }
+
+  /**
+   * Move the pacman in a given direction.
+   *
+   * @param {string} direction - The direction in which to move the Pacman.
+   * @returns {void}
+   */
+  move() {
+    // if (map[cellX][cellY] !== '.') {
+      if (this.x < 0) {
+        this.x = 736;
+      } else if (this.x > 732) {
+        this.x = 0;
+      }
+      this.updateDirection();
+      this.forwardMove();
+      
+      console.log(this.checkCollision());
+      console.log(this.direction)
+      console.log(`x: ${this.x} y: ${this.y}`)
+      if (this.checkCollision()) {
+        this.backwardMove();
+        return;
+      }
+    // }
+  }
 
   /**
    * Draw the Pacman on the canvas.
