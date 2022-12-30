@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-/**
- * Game Logic.
- */
 const canvas = document.getElementById('game-canvas');
 const context = canvas.getContext('2d');
 
@@ -22,10 +19,17 @@ const createRect = (x, y, width, height, color) => {
 
 const fps = 30;
 const wallColor = '#342DCA';
-// const pathColor = '#000';
+
+// Define the size of each cell in the map (in pixels)
+const cellSize = 32;
+const wallInnerColor = '#000';
+const wallSpaceWidth = cellSize / 1.5;
+const wallOffset = (cellSize - wallSpaceWidth) / 2;
 
 // Set the background color of the canvas to black
-createRect(0, 0, canvas.clientWidth, canvas.height, '#000');
+const drawScreen = () => {
+  createRect(0, 0, canvas.clientWidth, canvas.height, '#000');
+}
 
 /*
  * Two-dimensional array representing the map for the Pacman game.
@@ -61,11 +65,6 @@ const map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
-// Define the size of each cell in the map (in pixels)
-const cellSize = 32;
-const wallInnerColor = '#000';
-const wallSpaceWidth = cellSize / 1.5;
-const wallOffset = (cellSize - wallSpaceWidth) / 2;
 
 /**
  * Draw the walls and the path.
@@ -86,18 +85,6 @@ const drawWalls = () => {
           wallColor
         );
       }
-      /**
-       *
-      if (map[i][j] === 0) { // current cell is a path.
-        createRect(
-          j * cellSize,
-          i * cellSize,
-          cellSize,
-          cellSize,
-          pathColor
-        );
-      }
-      */
       if (j > 0 && map[i][j - 1] === 1) {
         // Draw inner wall on the left side of the current cell
         createRect(
@@ -142,6 +129,15 @@ const drawWalls = () => {
   }
 };
 
+
+const pacman = new Pacman(
+  cellSize + (cellSize / 2),
+  cellSize + (cellSize / 2),
+  cellSize / 2,
+  'right', 
+  5
+);
+
 /**
  * Main game loop, responsible for updating the game state and drawing the game.
  *
@@ -153,7 +149,7 @@ const gameLoop = () => {
   draw();
 };
 
-/**
+/** 
  * Update the game state
  *
  * @function
@@ -163,16 +159,24 @@ const update = () => {
   /**
    * TODO: Update the game state.
    */
-};
+  pacman.move(pacman.updateDirection());
+}; 
+
+// console.log(pacman);
+
+pacman.draw(context);
 
 /**
  * Draw the game.
  *
  * @function
  * @returns {void}
- */
+ */ 
 const draw = () => {
+  drawScreen();
   drawWalls();
+  pacman.draw(context);
+  // pacman.draw();
 };
 
 // start the game loop.
