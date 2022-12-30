@@ -111,13 +111,43 @@ class Pacman {
   }
 
   /**
+   * Capture the keypress.
+   * 
+   * @function.
+   * @returns {void}
+   */
+  updateDirection = () => {
+    document.addEventListener('keydown', (event) => {
+      console.log(event.key)
+      // Check if the arrow keys were pressed
+      if (event.key === 'ArrowLeft') {
+        this.direction = 'left';
+        // console.log(pacman.direction);
+      } else if (event.key === 'ArrowRight') {
+        this.direction = 'right';
+      } else if (event.key === 'ArrowUp') {
+        this.direction = 'up';
+      } else if (event.key === 'ArrowDown') {
+        this.direction = 'down';
+      }
+    });
+  }
+
+  nextPos_x = this.x;
+  nextPos_y = this.y;
+
+  checkWallCollision() {
+    
+  }
+
+  /**
    * Move the pacman in a given direction.
    *
    * @param {string} direction - The direction in which to move the Pacman.
    * @returns {void}
    */
-  move(direction) {
-
+  move() {
+    // this.checkWallCollision();
 
     if (this.direction === 'right') {
       this.x += this.speed;
@@ -128,14 +158,8 @@ class Pacman {
     } else if (this.direction === 'down') {
       this.y += this.speed;
     }
-
-
-
-    this.direction = direction;
-    console.log(this.direction);
   }
 
-  checkWallCollision() {}
 
   /**
    * Draw the Pacman on the canvas.
@@ -152,45 +176,3 @@ class Pacman {
 }
 
 
-//const pacman = new Pacman(50, 50, 'right', 50);
-
-//pacman.move('left');
-//console.log(context);
-
-//pacman.draw(context);
-
-
-
-/**
- *
-const pacman = {
-  x: 50, // The x-coordinate of the pacman's position on the map
-  y: 50, // The y-coordinate of the pacman's position on the map
-  direction: 'right', // The direction that the pacman is facing.
-  speed: 5,
-  radius: 10,
-  color: 'yellow',
-  
-  updatePosition: () => {
-    if (this.direction === 'up') {
-      this.y -= this.speed;
-    } else if (this.direction === 'down') {
-      this.y += this.speed;
-    } else if (this.direction === 'left') {
-      this.x -= this.speed;
-    } else if (this.direction === 'right') {
-      this.x += this.speed;
-    }
-  },
-
-  // Method to draw the Pacman on the canvas
-  draw: function() {
-    context.beginPath();
-    context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-    context.fillStyle = this.color;
-    context.fill();
-  }
-};
-// module.exports = pacman;
- *
- */

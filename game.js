@@ -19,13 +19,18 @@ const createRect = (x, y, width, height, color) => {
 
 const fps = 30;
 const wallColor = '#342DCA';
-// const wallColor = '#afd';
-// const pathColor = '#000';
+
+// Define the size of each cell in the map (in pixels)
+const cellSize = 32;
+const wallInnerColor = '#000';
+const wallSpaceWidth = cellSize / 1.5;
+const wallOffset = (cellSize - wallSpaceWidth) / 2;
 
 // Set the background color of the canvas to black
 const drawScreen = () => {
   createRect(0, 0, canvas.clientWidth, canvas.height, '#000');
 }
+
 /*
  * Two-dimensional array representing the map for the Pacman game.
  *
@@ -60,11 +65,6 @@ const map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
-// Define the size of each cell in the map (in pixels)
-const cellSize = 32;
-const wallInnerColor = '#000';
-const wallSpaceWidth = cellSize / 1.5;
-const wallOffset = (cellSize - wallSpaceWidth) / 2;
 
 /**
  * Draw the walls and the path.
@@ -85,18 +85,6 @@ const drawWalls = () => {
           wallColor
         );
       }
-      /**
-       *
-      if (map[i][j] === 0) { // current cell is a path.
-        createRect(
-          j * cellSize,
-          i * cellSize,
-          cellSize,
-          cellSize,
-          pathColor
-        );
-      }
-      */
       if (j > 0 && map[i][j - 1] === 1) {
         // Draw inner wall on the left side of the current cell
         createRect(
@@ -142,6 +130,13 @@ const drawWalls = () => {
 };
 
 
+const pacman = new Pacman(
+  cellSize + (cellSize / 2),
+  cellSize + (cellSize / 2),
+  cellSize / 2,
+  'right', 
+  5
+);
 
 /**
  * Main game loop, responsible for updating the game state and drawing the game.
@@ -154,50 +149,6 @@ const gameLoop = () => {
   draw();
 };
 
-// /**
-//  * Update the direction.
-//  *
-//  * @function
-//  * @returns {void}
-//  */
-// const Player_movement = () => {
-//   // console.log('keypressed');
-//   if (pacman.direction === 'up') {
-//     pacman.y -= pacman.speed;
-//   } else if (pacman.direction === 'down') {
-//     pacman.y += pacman.speed;
-//   } else if (pacman.direction === 'left') {
-//     pacman.x -= pacman.speed;
-//   } else if (pacman.direction === 'right') {
-//     pacman.x += pacman.speed;
-//   }
-// };
-const pacman = new Pacman(50, 50, 16, 'right', 5);
-
-/**
- * Capture the keypress.
- * 
- * @function.
- * @returns {void}
- */
-const keyDown = () => {
-  document.addEventListener('keydown', (event) => {
-    // Check if the arrow keys were pressed
-    if (event.key === 'ArrowLeft') {
-      pacman.direction = 'left';
-      // console.log(pacman.direction);
-    } else if (event.key === 'ArrowRight') {
-      pacman.direction = 'right';
-    } else if (event.key === 'ArrowUp') {
-      pacman.direction = 'up';
-    } else if (event.key === 'ArrowDown') {
-      pacman.direction = 'down';
-    }
-  });
-}
-
-console.log(keyDown());
-
 /** 
  * Update the game state
  *
@@ -208,17 +159,12 @@ const update = () => {
   /**
    * TODO: Update the game state.
    */
-  pacman.move(pacman.direction);
-  // Player_movement();
-  // pacman.updatePosition();
+  pacman.move(pacman.updateDirection());
 }; 
 
-
-// pacman.move('left');
-console.log(pacman);
+// console.log(pacman);
 
 pacman.draw(context);
-
 
 /**
  * Draw the game.
