@@ -162,7 +162,7 @@ const update = () => {
 
 // console.log(pacman);
 
-pacman.draw(context);
+// pacman.draw(context);
 
 /**
  * Draw the game.
