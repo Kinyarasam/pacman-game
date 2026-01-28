@@ -4,9 +4,18 @@ export class pacman {
         this.y = y;
         this.size = size;
         this.speed = 2;
+
+        this.direction = { x: 0, y: 1};
     }
 
-    update() {}
+    setDirection(dir) {
+        this.direction = dir;
+    }
+
+    update() {
+        this.x += this.direction.x * this.speed
+        this.y += this.direction.y * this.speed;
+    }
 
     render(ctx) {
         ctx.fillStyle = "yellow";
