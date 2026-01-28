@@ -27,6 +27,31 @@ export class Maze {
             "100000000000000000001",
             "111111111111111111111",
         ];
+
+        this.pellets = new Set();
+
+        for (let row = 0; row < this.layout.length; row++) {
+            for (let col = 0; col < this.layout[row].length; col++) {
+                if (this.layout[row][col] === "0") {
+                    this.pellets.add(`${row},${col}`);
+                }
+            }
+        }
+    }
+
+    renderPellets(ctx) {
+        ctx.fillStyle = "white";
+
+        for (const key of this.pellets) {
+            const [row, col] = key.split(",").map(Number);
+
+            const x = col * this.tileSize + this.tileSize / 2;
+            const y = row * this.tileSize + this.tileSize / 2;
+
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 
     render(ctx) {
@@ -43,17 +68,27 @@ export class Maze {
                 }
             }
         }
+
+        this.renderPellets(ctx);
     }
 
-    isWall(x, y) {
+    eatPellet(x, y) {
         const col = Math.floor(x / this.tileSize);
         const row = Math.floor(y / this.tileSize);
 
+        const key = `${row},${col}`;
+
+        if (this.pellets.has(key)) {
+            this.pellets.delete(key);
+            return true;
+        }
+        return false;
+    }
+
+    isWall(col, row) {
         if (row < 0 || row >= this.layout.length) return true;
         if (col < 0 || col >= this.layout[0].length) return true;
 
         return this.layout[row][col] === "1";
     }
 }
-
-
