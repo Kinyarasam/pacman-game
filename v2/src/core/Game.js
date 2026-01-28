@@ -1,4 +1,5 @@
 import { pacman } from "../entities/Pacman.js";
+import { Maze } from "../map/Maze.js";
 import { InputHandler } from "./InputHandler.js";
 
 export class Game {
@@ -12,6 +13,8 @@ export class Game {
 
         this.pacman = new pacman(320, 320, 20);
         new InputHandler(this.pacman);
+
+        this.maze = new Maze(40);
     }
 
     start() {
@@ -26,11 +29,12 @@ export class Game {
     }
 
     update() {
-        this.pacman.update();
+        this.pacman.update(this.maze);
     }
 
     render() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.maze.render(this.ctx);
         this.pacman.render(this.ctx);
     }
 }

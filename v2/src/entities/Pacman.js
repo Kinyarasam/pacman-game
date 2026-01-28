@@ -12,9 +12,14 @@ export class pacman {
         this.direction = dir;
     }
 
-    update() {
-        this.x += this.direction.x * this.speed
-        this.y += this.direction.y * this.speed;
+    update(maze) {
+        const nextX = this.x + this.direction.x * this.speed
+        const nextY = this.y + this.direction.y * this.speed;
+
+        if (!maze.isWall(nextX, nextY)) {
+            this.x = nextX;
+            this.y = nextY;
+        }
     }
 
     render(ctx) {
